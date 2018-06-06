@@ -310,7 +310,7 @@ Vue.config.keyCodes.f1 = 112
 <!-- 只在 Ctrl 按键按下，其他按键未按下时，触发事件 -->
 <button @click.ctrl.exact="onCtrlClick">A</button>
 
-<!-- 只在系统辅助按键按下时，触发事件 -->
+<!-- 只在没有系统辅助按键按下时，触发事件 -->
 <button @click.exact="onClick">A</button>
 ```
 
