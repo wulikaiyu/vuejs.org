@@ -197,9 +197,3 @@ new Vue({
 ## `v-if` 与 `v-for` 一起使用
 
 当与 `v-if` 一起使用时，`v-for` 具有比 `v-if` 更高的优先级。更多详细信息，请查看<a href="../guide/list.html#%E5%B8%A6%E6%9C%89-v-if-%E7%9A%84-v-for">列表渲染指南</a>。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/conditional.html
-
-***

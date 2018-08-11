@@ -95,9 +95,3 @@ if (inBrowser && window.Vue) {
 ```
 
 ***
-
-***
-
-> 原文：https://vuejs.org/v2/guide/plugins.html
-
-***

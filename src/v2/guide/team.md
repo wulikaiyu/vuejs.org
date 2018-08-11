@@ -1160,9 +1160,3 @@ order: 803
 })()
 </script>
 {% endraw %}
-
-***
-
-> 原文：https://vuejs.org/v2/guide/team.html
-
-***

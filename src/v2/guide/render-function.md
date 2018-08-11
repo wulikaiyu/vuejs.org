@@ -712,9 +712,3 @@ console.error = function (error) {
 }
 </style>
 {% endraw %}
-
-***
-
-> 原文：https://vuejs.org/v2/guide/render-function.html
-
-***

@@ -69,9 +69,3 @@ order: 402
 ### 针对高级用户
 
 无论你更钟情 webpack 或是 Browserify，我们为简单的和更复杂的项目都提供了一些文档模板。我们建议浏览 [github.com/vuejs-templates](https://github.com/vuejs-templates)，找到你需要的部分，然后参考 README 中的说明，使用 [vue-cli](https://github.com/vuejs/vue-cli) 工具生成新的项目。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/single-file-components.html
-
-***

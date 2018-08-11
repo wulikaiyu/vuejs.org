@@ -334,9 +334,3 @@ Vue.config.keyCodes.f1 = 112
 2. 由于无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，并且和 DOM 完全解耦，更易于测试。
 
 3. 当一个 ViewModel 被销毁时，所有的事件监听器都会被自动删除。你无须担心如何自己清理它们。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/events.html
-
-***

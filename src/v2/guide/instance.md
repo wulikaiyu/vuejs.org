@@ -149,9 +149,3 @@ new Vue({
 下面是实例生命周期示意图。你不需要现在就完全明白一切，但是，当你深入学习和组织架构的时候，这个示意图会是很有帮助的参考。
 
 ![Vue 实例的生命周期](/images/lifecycle.png)
-
-***
-
-> 原文：https://vuejs.org/v2/guide/instance.html
-
-***

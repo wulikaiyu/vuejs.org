@@ -2018,9 +2018,3 @@ export default {
 })()
 </script>
 {% endraw %}
-
-***
-
-> 原文：https://vuejs.org/v2/style-guide/
-
-***

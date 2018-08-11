@@ -41,9 +41,3 @@ new Vue({
 ## 集成第三方路由
 
 如果有个人非常喜欢的第三方路由，如 [Page.js](https://github.com/visionmedia/page.js) 或 [Director](https://github.com/flatiron/director)，与 Vue 集成也[同样轻松](https://github.com/chrisvfritz/vue-2.0-simple-routing-example/compare/master...pagejs)。这里有一个使用 Page.js 的[完整示例](https://github.com/chrisvfritz/vue-2.0-simple-routing-example/tree/pagejs)。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/routing.html
-
-***

@@ -226,9 +226,3 @@ Riot 3.0 提供了一个类似于基于组件的开发模型（在 Riot 中称�
 
 - 更好的性能。Riot 使用了[遍历 DOM 树](http://riotjs.com/compare/#virtual-dom-vs-expressions-binding)而不是 Virtual DOM，但实际上用的还是脏检查机制，因此和 AngularJS 患有相同的性能问题。
 - 更多成熟工具的支持。Vue 提供官方的 [webpack](https://github.com/vuejs/vue-loader) 和 [Browserify](https://github.com/vuejs/vueify) 支持，而 Riot 依赖社区支持来构建系统集成。
-
-***
-
-> 原文：http://vuejs.org/v2/guide/comparison.html
-
-***

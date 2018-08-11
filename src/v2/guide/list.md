@@ -629,9 +629,3 @@ new Vue({
 - 变异方法：Vue 将观察数组(observed array)的变化数组方法(mutation method)包裹起来，以便在调用这些方法时，也能够触发视图更新。
 
 ***
-
-***
-
-> 原文：https://vuejs.org/v2/guide/list.html
-
-***

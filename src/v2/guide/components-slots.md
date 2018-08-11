@@ -227,9 +227,3 @@ Vue 基于现有 [Web Components 规范草案](https://github.com/w3c/webcompone
 ```
 
 这是让作用域插槽用法，变得思路清晰的好方法。
-
-***
-
-> 原文：http://vuejs.org/v2/guide/components-slots.html
-
-***
