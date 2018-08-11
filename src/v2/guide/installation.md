@@ -2,8 +2,8 @@
 title: 安装
 type: guide
 order: 1
-vue_version: 2.5.13
-gz_size: "30.67"
+vue_version: 2.5.16
+gz_size: "30.90"
 ---
 
 ### 兼容性
@@ -37,7 +37,7 @@ Vue.js **不支持** IE8 及其以下版本，因为 Vue.js 使用的 ECMAScript
 我们比较推荐的方式是，链接到可以手动修改的指定版本上：
 
 ``` html
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 ```
 
 你可以在 [cdn.jsdelivr.net/npm/vue](https://cdn.jsdelivr.net/npm/vue/) 浏览 npm 包的源码。
@@ -58,17 +58,7 @@ $ npm install vue
 
 ## 命令行接口工具
 
-Vue.js 提供一个[官方的命令行接口工具](https://github.com/vuejs/vue-cli)，用于快速搭建大型单页面应用程序。能够为现代前端开发的工作流程，带来持久强力的基础架构。只需几分钟，就可以建立并运行一个带有「热重载、保存时代码检查以及可直接用于生产环境的构建配置」的项目：
-
-``` bash
-# 安装 vue-cli
-$ npm install --global vue-cli
-# 使用 "webpack" 模板创建一个新项目
-$ vue init webpack my-project
-# 安装依赖，然后开始！
-$ cd my-project
-$ npm run dev
-```
+Vue 提供一个 [官方的命令行接口工具](https://github.com/vuejs/vue-cli)，用于快速搭建大型单页面应用程序。能够为现代前端开发的工作流程，带来持久强力的基础架构。只需几分钟，就可以建立并运行一个带有「热重载、保存时代码检查以及可直接用于生产环境的构建配置」的项目。更多细节请查看 [Vue CLI 文档](https://cli.vuejs.org)。
 
 <p class="tip">CLI 工具假定用户对 Node.js 和相关构建工具预先有一定程度的了解。如果你是初次接触 Vue，或者刚开始了解前端构建工具，我们强烈建议你不要使用任何构建工具，来完成<a href="./">指南</a>中的示例。</p><p class="tip">对于大陆用户，建议将 npm 的注册表源[设置为国内的镜像](http://riny.net/2014/cnpm/)，可以大幅提升安装速度。</p>
 
@@ -117,8 +107,6 @@ new Vue({
 
 在使用 `vue-loader` 或 `vueify` 时，`*.vue` 文件中的模板会 在构建时(build time)预编译(pre-compile)为 JavaScript。最终生成的 bundle 中你不再需要编译器(compiler)，因此可以直接使用只含有运行时的构建版本(runtime-only)。
 
-由于只含有运行时构建版本(runtime-only)比完整构建版本(full-build)轻量大约 30%，你应该尽可能使用只含有运行时的构建版本。如果你还是希望使用完整构建版本，则需要在打包器中配置别名：
-
 由于运行时版本的构建比其全面版本的重量轻约30％，因此你可以随时使用它。如果你仍然希望使用完整版本，则需要在捆绑程序中配置别名：
 
 #### webpack
@@ -162,6 +150,19 @@ rollup({
 }
 ```
 
+#### Parcel
+
+在你的项目 `package.json` 添加：
+
+``` js
+{
+  // ...
+  "alias": {
+    "vue" : "./node_modules/vue/dist/vue.common.js"
+  }
+}
+```
+
 ### 开发环境模式 vs 生产环境模式
 
 对于 UMD 构建版本，开发环境/生产环境模式是必须配置的选项(hard-coded)，未压缩版本文件用于开发环境，压缩文件用于生产环境。
@@ -172,7 +173,15 @@ CommonJS 和 ES 模块构建版本也可以保留初始环境 `process.env.NODE_
 
 #### webpack
 
-使用 webpack 的 [DefinePlugin](https://webpack.js.org/plugins/define-plugin/)：
+在 webpack 4+，你可以使用 `mode` 选项：
+
+``` js
+module.exports = {
+  mode: 'production'
+}
+```
+
+但是在 webpack 3 和 webpack 3 以下版本，你需要使用 [DefinePlugin](https://webpack.docschina.org/plugins/define-plugin/)：
 
 ``` js
 var webpack = require('webpack')

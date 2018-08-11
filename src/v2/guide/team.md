@@ -218,6 +218,7 @@ order: 803
     'Munich, Germany': [48.137154, 11.576124],
     'Orlando, FL, USA': [28.538335, -81.379236],
     'Paris, France': [48.856614, 2.352222],
+    'Poznań, Poland': [52.4006553, 16.761583],
     'Seoul, South Korea': [37.566535, 126.977969],
     'Shanghai, China': [31.230390, 121.473702],
     'Taquaritinga, Brazil': [-21.430094, -48.515285],
@@ -368,7 +369,7 @@ order: 803
         'vuejs.org', 'jp.vuejs.org'
       ],
       reposPersonal: [
-        'vue-i18n', 'vue-i18n-loader', 'vue-i18n-extensions'
+        'vue-i18n', 'vue-cli-plugin-i18n', 'vue-i18n-loader', 'vue-i18n-extensions'
       ],
       links: [
         'https://cuusoo.com', 'http://frapwings.jp'
@@ -634,10 +635,65 @@ order: 803
       links: [
         'https://vuejsfeed.com/', 'https://vueschool.io/'
       ]
+    },
+    {
+      name: 'Michał Sajnóg',
+      city: 'Poznań, Poland',
+      languages: ['pl', 'en'],
+      github: 'michalsnik',
+      twitter: 'michalsnik',
+      work: {
+        role: 'Senior Frontend Developer / Team Leader',
+        org: 'Netguru',
+        orgUrl: 'https://netguru.co/'
+      },
+      reposOfficial: [
+        'eslint-plugin-vue',
+        'vue-devtools'
+      ],
+      reposPersonal: [
+        'vue-computed-helpers', 'vue-content-placeholders'
+      ]
+    },
+    {
+      name: 'GU Yiling',
+      city: 'Shanghai, China',
+      languages: ['zh', 'en'],
+      work: {
+        role: 'Senior web developer',
+        org: 'Baidu, inc.',
+        orgUrl: 'https://www.baidu.com/'
+      },
+      github: 'Justineo',
+      twitter: '_justineo',
+      reposOfficial: [
+        'vue', 'cn.vuejs.org'
+      ],
+      reposPersonal: [
+        'Justineo/vue-awesome', 'ecomfe/vue-echarts', 'ecomfe/veui'
+      ]
     }
   ]))
 
   var partners = [
+    {
+      name: 'Alex Jover',
+      title: 'Vue Components Squeezer',
+      city: 'Alicante, Spain',
+      languages: ['es', 'en'],
+      work: {
+        role: 'Web, PWA and Performance Consultant',
+        org: 'Freelance'
+      },
+      github: 'alexjoverm',
+      twitter: 'alexjoverm',
+      reposPersonal: [
+        'v-runtime-template', 'v-lazy-image', 'vue-testing-series'
+      ],
+      links: [
+        'https://alexjover.com'
+      ]
+    },
     {
       name: 'Sebastien Chopin',
       title: '#1 Nuxt Brother',
@@ -659,7 +715,7 @@ order: 803
       city: 'Bordeaux, France',
       languages: ['fr', 'en'],
       github: 'alexchopin',
-      twitter: 'ChopinAlexandre',
+      twitter: '_achopin',
       work: {
         org: 'Orion',
         orgUrl: 'https://orion.sh'
@@ -716,7 +772,7 @@ order: 803
       city: 'Annecy, France',
       languages: ['fr', 'en'],
       github: 'Haeresis',
-      twitter: 'MachinisteWeb',
+      twitter: 'ZetesEthique',
       work: {
         role: 'Cofounder',
         org: 'Orchard ID',

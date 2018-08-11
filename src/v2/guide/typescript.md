@@ -6,14 +6,11 @@ order: 404
 
 在 Vue 2.5.0+ 中，我们极大改善了类型声明，以使用默认的基于对象(object-based)的 API。同时也引入了一些变化，需要进行相应的升级操作。阅读[博客文章](https://medium.com/the-vue-point/upcoming-typescript-changes-in-vue-2-5-e9bd7e2ecf08)了解更多详情。
 
-
 ## 发布于 NPM 包中的官方声明
 
 静态类型系统(static type system)可以辅助防止许多潜在的运行时错误，特别是随着应用程序的增长。这就是为什么 Vue 使用 [TypeScript](https://www.typescriptlang.org/) [官方的类型声明](https://github.com/vuejs/vue/tree/dev/types) - 不仅是用在 Vue 核心本身，也用在 [vue-router](https://github.com/vuejs/vue-router/tree/dev/types) 和 [vuex](https://github.com/vuejs/vuex/tree/dev/types)。
 
-由于这些声明文件[发布于 NPM](https://cdn.jsdelivr.net/npm/vue/types/)，并且最新版的 TypeScript 知道如何从 NPM 包中解析类型声明，这意味着，通过NPM 安装后，你甚至不需要任何额外工具，就可以对 Vue 使用 TypeScript：
-
-我们还计划在不久的将来在 `vue-cli` 中提供一个集成 Vue + TypeScript 项目的脚手架。
+由于这些声明文件已经 [发布于 NPM](https://cdn.jsdelivr.net/npm/vue/types/)，并且最新版的 TypeScript 知道如何从 NPM 包中解析类型声明，这意味着，通过 NPM 安装后，你甚至不需要任何额外工具，就可以对 Vue 使用 TypeScript：
 
 ## 推荐配置
 
@@ -38,11 +35,23 @@ order: 404
 
 ## 开发工具
 
-为了使用 TypeScript 开发 Vue 应用程序，我们强烈建议使用 [Visual Studio Code](https://code.visualstudio.com/)，它为 TypeScript 提供了开箱即用的良好支持。
+### 项目创建
 
-如果你正在使用[单文件组件](./single-file-components.html)(SFC)，请使用酷炫的 [Vetur 扩展](https://github.com/vuejs/vetur)，它提供了在单文件组件中进行 TypeScript 推断和许多其他强大的功能。
+[Vue CLI 3](https://github.com/vuejs/vue-cli) 可以生成使用 TypeScript 的新项目。创建过程如下：
 
-[WebStorm](https://www.jetbrains.com/webstorm/) 也为 TypeScript 和 Vue.js 提供了开箱即用的良好支持。
+```bash
+# 1. 如果还未安装 Vue CLI，那么我们需要预先安装它
+npm install --global @vue/cli
+
+# 2. 创建一个新项目，选择 "Manually select features(手动选择特性)" 选项
+vue create my-project-name
+```
+
+### 编辑器支持
+
+对于使用 TypeScript 开发 Vue 应用程序，我们强烈建议你使用 [Visual Studio Code](https://code.visualstudio.com/)，为 TypeScript 提供开箱即用的支持。如果你正在使用 [单文件组件](./single-file-components.html)(SFC)，请使用酷炫的 [Vetur 扩展](https://github.com/vuejs/vetur)，它提供了在单文件组件中进行 TypeScript 推断，以及许多其他强大的功能。
+
+[WebStorm](https://www.jetbrains.com/webstorm/) 也为 TypeScript 和 Vue 提供了开箱即用的良好支持。
 
 ## 基本用法
 
@@ -178,9 +187,3 @@ const Component = Vue.extend({
 ```
 
 如果你发现类型推断或成员补齐无法正常使用，标注某些方法可能有助于解决这些问题。使用 `--noImplicitAny` 选项，会有助于找出这些未标注的方法。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/typescript.html
-
-***

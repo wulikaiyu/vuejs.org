@@ -51,7 +51,7 @@ Vue.component('base-checkbox', {
 
 现在，在这个组件中使用 `v-model`：
 
-```js
+```html
 <base-checkbox v-model="lovingVue"></base-checkbox>
 ```
 
@@ -128,7 +128,7 @@ Vue.component('base-input', {
 })
 ```
 
-现在，`<base-input>` 组件是一个**毫无疑惑的容器组件(fully transparent wrapper)**了，也就是说，可以像使用一个普通的 `<input>` 元素一样去使用它：所有的特性和监听器，都能够如同普通 input 元素一样正常运行。
+现在，`<base-input>` 组件是一个**毫无疑惑的容器组件(fully transparent wrapper)**了，也就是说，可以像使用一个普通的 `<input>` 元素一样去使用它：所有的特性和监听器，都能够如同普通 input 元素一样正常运行，无须再使用 `.native` 修饰符。
 
 ## `.sync` 修饰符
 

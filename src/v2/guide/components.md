@@ -185,7 +185,7 @@ new Vue({
     posts: [
       { id: 1, title: '我的 Vue 旅程' },
       { id: 2, title: '用 Vue 写博客' },
-      { id: 3, title: 'Vue 如此有趣' },
+      { id: 3, title: 'Vue 如此有趣' }
     ]
   }
 })
@@ -210,24 +210,63 @@ new Vue({
 在创建 `<blog-post>` 组件时，最终的模板中，不仅要包含标题：
 
 ```html
-<h3>{{ post.title }}</h3>
+<h3>{{ title }}</h3>
 ```
 
 至少，还需要包含文章的内容：
 
 ```html
-<h3>{{ post.title }}</h3>
-<div v-html="post.content"></div>
+<h3>{{ title }}</h3>
+<div v-html="content"></div>
 ```
 
 如果你试图在 template 模板中按照以上方式书写，Vue 将会显示一个错误，并解释为 **every component must have a single root element**（译注：每个组件都必须有一个根元素）。你可以通过为以上模板包裹一个父元素，来修复这个错误，例如：
 
 ```html
 <div class="blog-post">
-  <h3>{{ post.title }}</h3>
-  <div v-html="post.content"></div>
+  <h3>{{ title }}</h3>
+  <div v-html="content"></div>
 </div>
 ```
+
+随着组件的扩充，我们的文章内容不只会有标题和内容，还会加入发布日期、评论和其他。为每个相关信息，都去定义一个对应的 prop，这会变得非常繁琐：
+
+```html
+<blog-post
+  v-for="post in posts"
+  v-bind:key="post.id"
+  v-bind:title="post.title"
+  v-bind:content="post.content"
+  v-bind:publishedAt="post.publishedAt"
+  v-bind:comments="post.comments"
+></blog-post>
+```
+
+或许是时候重构 `<blog-post>` 组件了，我们现在只接收一个 `post` prop：
+
+```html
+<blog-post
+  v-for="post in posts"
+  v-bind:key="post.id"
+  v-bind:post="post"
+></blog-post>
+```
+
+```js
+Vue.component('blog-post', {
+  props: ['post'],
+  template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <div v-html="post.content"></div>
+    </div>
+  `
+})
+```
+
+<p class="tip">上面的示例，还有接下来的一些示例，都用到了 JavaScript 的 [模板字面量(template literal)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)，以便多行模板更加具备可读性。Internet Explorer (IE) 不支持此语法，因此如果你必须支持 IE，而又不想转译代码（例如，使用 Babel 或 TypeScript 进行转译），使用 [新行转义(newline escapes)](https://css-tricks.com/snippets/javascript/multiline-string-variables-in-javascript/) 替代模板字面量语法。</p>
+
+现在，不论何时为 `post` 对象添加一个新的属性，它都会自动地在 `<blog-post>` 内可用。
 
 ## 使用 events 向父组件发送消息
 
@@ -276,8 +315,6 @@ Vue.component('blog-post', {
 })
 ```
 
-<p class="tip">上面的示例，还有接下来的一些示例，都用到了 JavaScript 的 [模板字面量(template literal)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)，以便多行模板更加具备可读性。Internet Explorer (IE) 不支持此语法，因此如果你必须支持 IE，而又不想转译代码（例如，使用 Babel 或 TypeScript 进行转译），使用 [新行转义(newline escapes)](https://css-tricks.com/snippets/javascript/multiline-string-variables-in-javascript/) 替代模板字面量语法。</p>
-
 现在的问题是，这里的 button 无法实现这个功能：
 
 ```html
@@ -286,7 +323,7 @@ Vue.component('blog-post', {
 </button>
 ```
 
-当我们点击 button 时，我们需要和父组件通信，告知它加大所有文章的文本字号。幸运的是，Vue 实例为我们提供了一个自定义事件(custom event)系统，来解决这个问题。想要向父组件发送事件，我们可以调用实例中内置的 [**`$emit`** 方法](../api/#Instance-Methods-Events)，传递事件名称：
+当我们点击 button 时，我们需要和父组件通信，告知它加大所有文章的文本字号。幸运的是，Vue 实例为我们提供了一个自定义事件(custom event)系统，来解决这个问题。想要向父组件发送事件，我们可以调用实例中内置的 [**`$emit`** 方法](../api/#vm-emit)，传递事件名称：
 
 ```html
 <button v-on:click="$emit('enlarge-text')">
@@ -418,7 +455,7 @@ Vue.component('custom-input', {
   template: `
     <input
       v-bind:value="value"
-      v-on:input="$emit('input', $event.target.value)
+      v-on:input="$emit('input', $event.target.value)"
     >
   `
 })
@@ -593,9 +630,3 @@ new Vue({
 现在，你仅需要知道 DOM 模板解析 的这些相关知识 - 实际上，Vue _基础指南部分_已经结束。为此值得祝贺！虽然还有很多要学习的知识点，但是现在，我们推荐你在此休息一下，开始熟悉并享受使用 Vue 构建项目的乐趣。
 
 如果你能够很好适应这些内容，并且已经完全消化这些知识点，我们建议你稍后回到这里，继续深入阅读 [动态组件和异步组件](components-dynamic-async.html) 的完整指南，以及侧边栏中深入组件部分的其他页面。
-
-***
-
-> 原文：http://vuejs.org/v2/guide/components.html
-
-***

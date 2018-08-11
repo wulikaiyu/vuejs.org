@@ -171,6 +171,7 @@ methods: {
 - `.capture`
 - `.self`
 - `.once`
+- `.passive`
 
 ``` html
 <!-- 停止点击事件冒泡 -->
@@ -203,7 +204,7 @@ methods: {
 <a v-on:click.once="doThis"></a>
 ```
 
-和其他只能处理 DOM 事件的修饰符不同，`.once` 修饰符还可以用于处理[组件事件](components.html#使用-v-on-的自定义事件)。如果你还没有阅读过组件的相关内容，现在也无须担心。
+和其他只能处理 DOM 事件的修饰符不同，`.once` 修饰符还可以用于处理[组件事件](components-custom-events.html#使用-v-on-的自定义事件)。如果你还没有阅读过组件的相关内容，现在也无须担心。
 
 > 2.3.0+ 新增
 

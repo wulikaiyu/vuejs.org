@@ -118,14 +118,25 @@ Then create `components/BlogHome.vue` which will be your blog homepage that list
   <div id="blog-home">
       <h1>{{ page_title }}</h1>
       <!-- Create `v-for` and apply a `key` for Vue. Here we are using a combination of the slug and index. -->
-      <div v-for="(post,index) in posts" :key="post.slug + '_' + index">
+      <div
+        v-for="(post,index) in posts"
+        :key="post.slug + '_' + index"
+      >
         <router-link :to="'/blog/' + post.slug">
           <article class="media">
             <figure>
               <!-- Bind results using a `:` -->
               <!-- Use a `v-if`/`else` if their is a `featured_image` -->
-              <img v-if="post.featured_image" :src="post.featured_image" alt="">
-              <img v-else src="http://via.placeholder.com/250x250" alt="">
+              <img
+                v-if="post.featured_image"
+                :src="post.featured_image"
+                alt=""
+              >
+              <img
+                v-else
+                src="http://via.placeholder.com/250x250"
+                alt=""
+              >
             </figure>
             <h2>{{ post.title }}</h2>
             <p>{{ post.summary }}</p>
@@ -174,10 +185,18 @@ Now create `components/BlogPost.vue` which will be your Blog Post page to list a
     <h4>{{ post.data.author.first_name }} {{ post.data.author.last_name }}</h4>
     <div v-html="post.data.body"></div>
 
-    <router-link v-if="post.meta.previous_post" :to="/blog/ + post.meta.previous_post.slug" class="button">
+    <router-link
+      v-if="post.meta.previous_post"
+      :to="/blog/ + post.meta.previous_post.slug"
+      class="button"
+    >
       {{ post.meta.previous_post.title }}
     </router-link>
-    <router-link v-if="post.meta.next_post" :to="/blog/ + post.meta.next_post.slug" class="button">
+    <router-link
+      v-if="post.meta.next_post"
+      :to="/blog/ + post.meta.next_post.slug"
+      class="button"
+    >
       {{ post.meta.next_post.title }}
     </router-link>
   </div>
