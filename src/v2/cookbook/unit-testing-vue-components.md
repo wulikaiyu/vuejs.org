@@ -44,11 +44,11 @@ export default {
 ```
 
 ```js
-import { shallow } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 test('Foo', () => {
   // 渲染组件
-  const wrapper = shallow(Hello)
+  const wrapper = shallowMount(Hello)
 
   // 应当的实现效果是，去除两侧空格后，不允许 `username` 少于 7 个字符
   wrapper.setData({ username: ' '.repeat(7) })
@@ -82,7 +82,7 @@ test('Foo', () => {
 
 #### 起步
 
-[Vue Test Utils](https://github.com/vuejs/vue-test-utils) 是用于辅助单元测试 Vue 组件的官方库。[vue-cli](https://github.com/vuejs/vue-cli) `webpack` template 中带有 Karma 或 Jest，都良好支持测试运行器，Vue Test Utils 文档中的[指南](https://vue-test-utils.vuejs.org/zh-cn/guides/)也可以参考。
+[Vue Test Utils](https://github.com/vuejs/vue-test-utils) 是用于辅助单元测试 Vue 组件的官方库。[vue-cli](https://github.com/vuejs/vue-cli) `webpack` template 中带有 Karma 或 Jest，都良好支持测试运行器，Vue Test Utils 文档中的 [指南](https://vue-test-utils.vuejs.org/guides/) 也可以参考。
 
 ## 现实示例
 
@@ -145,26 +145,26 @@ export default {
 然后，在测试代码中，我们先来尝试：
 
 ```js
-import { shallow } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 describe('Foo', () => {
   it('renders a message and responds correctly to user input', () => {
-      const wrapper = shallow(Foo, {
-    data: {
-      message: 'Hello World',
-      username: ''
-    }
-  })
+    const wrapper = shallowMount(Foo, {
+      data: {
+        message: 'Hello World',
+        username: ''
+      }
+    })
 
-  // 查看 message 是否渲染
-  expect(wrapper.find('.message').text()).toEqual('Hello World')
+    // 查看 message 是否渲染
+    expect(wrapper.find('.message').text()).toEqual('Hello World')
 
-  // 断言 error 已经渲染
-  expect(wrapper.find('.error').exists()).toBeTruthy()
+    // 断言 error 已经渲染
+    expect(wrapper.find('.error').exists()).toBeTruthy()
 
-  // 修改 `username`，然后断言 error 不再渲染
-  wrapper.setData({ username: 'Lachlan' })
-  expect(wrapper.find('.error').exists()).toBeFalsy()
+    // 修改 `username`，然后断言 error 不再渲染
+    wrapper.setData({ username: 'Lachlan' })
+    expect(wrapper.find('.error').exists()).toBeFalsy()
   })
 })
 ```
@@ -183,11 +183,11 @@ describe('Foo', () => {
 
 *Updated test*:
 ```js
-import { shallow } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Foo from './Foo'
 
 const factory = (values = {}) => {
-  return shallow(Foo, {
+  return shallowMount(Foo, {
     data: { ...values  }
   })
 }
@@ -221,7 +221,7 @@ describe('Foo', () => {
 
 注意事项：
 
-在代码顶部，我们声明了工厂函数，将 `values` 对象合并到 `data` 中，然后返回一个新的 `wrapper` 实例。这样，我们不需要在每个测试中都重复写 `const wrapper = shallow(Foo)`。另一个较大的好处是，如果是你可能想要在每个测试中模拟或存根的组件，而这个组件是具有一个 method 方法或 computed 计算属性的复杂组件，现在则只需要声明一次。
+在代码顶部，我们声明了工厂函数，将 `values` 对象合并到 `data` 中，然后返回一个新的 `wrapper` 实例。这样，我们不需要在每个测试中都重复写 `const wrapper = shallowMount(Foo)`。另一个较大的好处是，如果是你可能想要在每个测试中模拟或存根的组件，而这个组件是具有一个 method 方法或 computed 计算属性的复杂组件，现在则只需要声明一次。
 
 ## 附加上下文
 
@@ -231,7 +231,7 @@ describe('Foo', () => {
 - 通过 `Vuex` store 提交(commit)或分发(dispatch) mutations 或 actions
 - 测试交互
 
-在 Vue Test Utils [指南](https://vue-test-utils.vuejs.org/en/guides/)中，展示了这些测试行为的更多完整示例。
+在 Vue Test Utils [指南](https://vue-test-utils.vuejs.org/guides/)中，展示了这些测试行为的更多完整示例。
 
 Vue Test Utils 和巨大的 JavaScript 生态系统提供了大量的工具，来促进达到接近 100％ 测试覆盖率。不过，单元测试只是测试金字塔的一部分。还有一些其他类型的测试，包括 e2e（end to end - 端到端）测试和快照测试。单元测试是最细度和最基本的测试 - 他们对最小工作单元做出断言，将单个组件的每个部分隔离开。
 

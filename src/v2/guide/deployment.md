@@ -18,7 +18,15 @@ order: 401
 
 #### webpack
 
-使用 webpack 的 [DefinePlugin](https://webpack.docschina.org/plugins/define-plugin/) 来指定生产环境，以便在压缩时可以让 UglifyJS 自动删除代码块内的警告语句。例如配置：
+在 webpack 4+，你可以使用 `mode` 选项：
+
+``` js
+module.exports = {
+  mode: 'production'
+}
+```
+
+但是在 webpack 3 和 webpack 3 以下版本，你需要使用 [DefinePlugin](https://webpack.docschina.org/plugins/define-plugin/)：
 
 ``` js
 var webpack = require('webpack')
@@ -28,14 +36,11 @@ module.exports = {
   plugins: [
     // ...
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
+      'process.env.NODE_ENV': JSON.stringify('production')
     })
   ]
 }
 ```
-
 #### Browserify
 
 - 运行打包命令，设置 `NODE_ENV` 为 `"production"`。等于告诉 `vueify` 避免引入热重载和开发相关代码。

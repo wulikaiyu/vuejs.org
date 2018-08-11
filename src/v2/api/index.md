@@ -255,7 +255,7 @@ type: api
 
 - **用法：**
 
-  设置对象的属性。如果对象是响应式的，确保创建后的属性也是响应式属性，并且能够触发视图更新。这主要用于解决 Vue 无法检测属性添加的限制。
+  为响应式对象添加一个属性，确保新属性也是响应式的，并且能够触发视图更新。这必须用于为响应式对象添加新属性，因为 Vue 无法检测到普通属性的添加（例如，`this.myObject.newProperty = 'hi'`）。
 
   <p class="tip">target 对象不能是 Vue 实例，或者 Vue 实例的根数据对象。</p>
 
@@ -1023,7 +1023,7 @@ type: api
   - 一个对象，对象的 key 是本地的绑定名称，value 是以下二者之一：
     - 在可访问的 injections 对象中，通过 key （字符串或 Symbol）检索到的值
     - 一个对象，该对象的
-      - `name` 属性是：在可访问的 injections 对象中，通过 key （字符串或 Symbol）检索到的值
+      - `from` 属性是：在可访问的 injections 对象中，通过 key （字符串或 Symbol）检索到的值
       - 并且 `default` 属性是：降级情况下会用到的回退值(fallback value)
 
   > 提示：`provide` 和 `inject` 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的属性还是可响应的。
@@ -1031,6 +1031,7 @@ type: api
 - **示例：**
 
   ``` js
+  // 父组件提供(provide) 'foo'
   var Provider = {
     provide: {
       foo: 'bar'
@@ -1038,6 +1039,7 @@ type: api
     // ...
   }
 
+  // 子组件注入(inject) 'foo'
   var Child = {
     inject: ['foo'],
     created () {
@@ -1588,13 +1590,138 @@ type: api
 
   - 如果同时提供了事件与回调，则只移除这个回调的监听器。
 
-### vm.$emit( event, [...args] )
+### vm.$emit( eventName, [...args] )
 
 - **参数：**
-  - `{string} event`
+  - `{string} eventName`
   - `[...args]`
 
   触发当前实例上的事件。附加参数都会传给监听器回调。
+
+- **示例：**
+
+  只向 `$emit` 传递一个事件名称：
+
+  ```js
+  Vue.component('welcome-button', {
+    template: `
+      <button v-on:click="$emit('welcome')">
+        Click me to be welcomed
+      </button>
+    `
+  })
+  ```
+  ```html
+  <div id="emit-example-simple">
+    <welcome-button v-on:welcome="sayHi"></welcome-button>
+  </div>
+  ```
+  ```js
+  new Vue({
+    el: '#emit-example-simple',
+    methods: {
+      sayHi: function () {
+        alert('Hi!')
+      }
+    }
+  })
+  ```
+  {% raw %}
+  <div id="emit-example-simple" class="demo">
+    <welcome-button v-on:welcome="sayHi"></welcome-button>
+  </div>
+  <script>
+    Vue.component('welcome-button', {
+      template: `
+        <button v-on:click="$emit('welcome')">
+          Click me to be welcomed
+        </button>
+      `
+    })
+    new Vue({
+      el: '#emit-example-simple',
+      methods: {
+        sayHi: function () {
+          alert('Hi!')
+        }
+      }
+    })
+  </script>
+  {% endraw %}
+
+  向 `$emit` 传递一个额外参数：
+
+  ```js
+  Vue.component('magic-eight-ball', {
+    data: function () {
+      return {
+        possibleAdvice: ['Yes', 'No', 'Maybe']
+      }
+    },
+    methods: {
+      giveAdvice: function () {
+        var randomAdviceIndex = Math.floor(Math.random() * this.possibleAdvice.length)
+        this.$emit('give-advice', this.possibleAdvice[randomAdviceIndex])
+      }
+    },
+    template: `
+      <button v-on:click="giveAdvice">
+        Click me for advice
+      </button>
+    `
+  })
+  ```
+
+  ```html
+  <div id="emit-example-argument">
+    <magic-eight-ball v-on:give-advice="showAdvice"></magic-eight-ball>
+  </div>
+  ```
+
+  ```js
+  new Vue({
+    el: '#emit-example-argument',
+    methods: {
+      showAdvice: function (advice) {
+        alert(advice)
+      }
+    }
+  })
+  ```
+
+  {% raw %}
+  <div id="emit-example-argument" class="demo">
+    <magic-eight-ball v-on:give-advice="showAdvice"></magic-eight-ball>
+  </div>
+  <script>
+    Vue.component('magic-eight-ball', {
+      data: function () {
+        return {
+          possibleAdvice: ['Yes', 'No', 'Maybe']
+        }
+      },
+      methods: {
+        giveAdvice: function () {
+          var randomAdviceIndex = Math.floor(Math.random() * this.possibleAdvice.length)
+          this.$emit('give-advice', this.possibleAdvice[randomAdviceIndex])
+        }
+      },
+      template: `
+        <button v-on:click="giveAdvice">
+          Click me for advice
+        </button>
+      `
+    })
+    new Vue({
+      el: '#emit-example-argument',
+      methods: {
+        showAdvice: function (advice) {
+          alert(advice)
+        }
+      }
+    })
+  </script>
+  {% endraw %}
 
 ## 实例方法 / 生命周期
 
@@ -2177,7 +2304,7 @@ type: api
 
 ### is
 
-- **期望类型：**`string`
+- **期望类型：**`string | Object (component’s options object)`
 
   用于[动态组件](../guide/components.html#动态组件)且基于 [DOM 模板解析注意事项](../guide/components.html#DOM-模板解析注意事项)来工作。
 
@@ -2407,9 +2534,3 @@ type: api
 ## 服务端渲染
 
 - 请参考 [vue-server-renderer 包文档](https://github.com/vuejs/vue/tree/dev/packages/vue-server-renderer)。
-
-***
-
-> 原文：https://vuejs.org/v2/api/
-
-***

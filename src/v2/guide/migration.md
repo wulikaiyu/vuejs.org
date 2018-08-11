@@ -363,7 +363,7 @@ computed: {
 Or with component methods:
 
 ``` js
-template: '<p>message: {{ getTimeMessage }}</p>',
+template: '<p>message: {{ getTimeMessage() }}</p>',
 methods: {
   getTimeMessage: function () {
     return Date.now() + this.message
@@ -642,7 +642,7 @@ strings.map(function (str) {
 <p v-for="item in items" v-bind:ref="'item' + item.id"></p>
 ```
 
-以前 `v-el`/`v-ref` 和 `v-for` 一起使用将产生一个DOM数组或者组件数组，因为没法给每个元素一个特定名字。现在你还仍然可以这样做，给每个元素一个同样的`ref`：
+以前 `v-el`/`v-ref` 和 `v-for` 一起使用将产生一个 DOM 数组或者组件数组，因为没法给每个元素一个特定名字。现在你还仍然可以这样做，给每个元素一个同样的 `ref`：
 
 ``` html
 <p v-for="item in items" ref="items"></p>

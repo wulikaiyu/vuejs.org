@@ -25,6 +25,28 @@ Vue.component('blog-post', {
 
 再次申明，如果是在使用字符串模板的场景，则没有这些限制。
 
+## prop 类型
+
+目前为止，我们只看到字符串数组形式展示的 props：
+
+```js
+props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+```
+
+通常，你会希望每个 prop 都对应指定类型的值。在这些场景中，你可以将 props 展示为对象，其中每个属性的名称和值，分别包含 prop 名称和类型：
+
+```js
+props: {
+  title: String,
+  likes: Number,
+  isPublished: Boolean,
+  commentIds: Array,
+  author: Object
+}
+```
+
+这不只是使你的组件更像文档，而且还会在传递错误类型的值时，在浏览器 JavaScript 控制台中抛出警告以提醒用户。在本页面下方 [类型检查和其他 prop 验证](#Prop-Validation) 部分，你可以了解更多信息。
+
 ## 静态 props 和动态 props
 
 到目前为止，你已经见过向 props传递一个静态值，就像这样：
@@ -36,7 +58,11 @@ Vue.component('blog-post', {
 还可以通过 `v-bind` 给 props 分配动态值，就像这样：
 
 ```html
+<!-- 动态分配一个变量对应的值 -->
 <blog-post v-bind:title="post.title"></blog-post>
+
+<!-- 动态分配一个复合表达式对应的值 -->
+<blog-post v-bind:title="post.title + ' by ' + post.author.name"></blog-post>
 ```
 
 在上面两个示例中，我们传递字符串值，然而，实际上可以给一个 prop 传递_任意_类型的值。
@@ -56,14 +82,14 @@ Vue.component('blog-post', {
 
 ```html
 <!-- Including the prop with no value will imply `true`. -->
-<blog-post favorited></blog-post>
+<blog-post is-published></blog-post>
 
 <!-- `false` 是静态的，这就需要我们使用 v-bind， -->
 <!-- 来告诉 Vue 它是以 JavaScript 表达式表现，而不是一个字符串 -->
-<base-input v-bind:favorited="false">
+<blog-post v-bind:is-published="false"></blog-post>
 
 <!-- 将一个变量，动态地分配到属性值上 -->
-<base-input v-bind:favorited="post.currentUserFavorited">
+<blog-post v-bind:is-published="post.isPublished"></blog-post>
 ```
 
 ### 传递一个 Array 类型值
@@ -82,10 +108,10 @@ Vue.component('blog-post', {
 ```html
 <!-- object 是静态的，这就需要我们使用 v-bind， -->
 <!-- 来告诉 Vue 它是以 JavaScript 表达式表现，而不是一个字符串 -->
-<blog-post v-bind:comments="{ id: 1, title: '我的 Vue 旅程' }"></blog-post>
+<blog-post v-bind:author="{ name: 'Veronica', company: 'Veridian Dynamics' }"></blog-post>
 
 <!-- 将一个变量，动态地分配到属性值上 -->
-<blog-post v-bind:post="post"></blog-post>
+<blog-post v-bind:author="post.author"></blog-post>
 ```
 
 ### 传递一个对象的所有属性
@@ -148,7 +174,7 @@ post: {
 
 ## prop 验证
 
-可以为组件 props 指定一些接收条件。如果某个接收条件未满足验证，Vue 就会在浏览器 JavaScript 控制台中触发警告。当你创建一个组件，并将这个组件提供给他人使用时，验证机制是很有帮助的。
+可以为组件 props 指定一些接收条件，例如你之前看到的类型。如果某个接收条件未满足验证，Vue 就会在浏览器 JavaScript 控制台中触发警告。当你创建一个组件，并将这个组件提供给他人使用时，验证机制是很有帮助的。
 
 为了指定 prop 验证，你需要将 `props` 的值定义为一个带有验证接收条件的对象，而不是一个由字符串构成的数组。例如：
 
@@ -200,9 +226,10 @@ Vue.component('my-component', {
 - String
 - Number
 - Boolean
-- Function
-- Object
 - Array
+- Object
+- Date
+- Function
 - Symbol
 
 除了以上这些，`type` 还可以是一个自定义构造函数，通过 `instanceof` 对 props 值进行类型推断。
@@ -312,9 +339,3 @@ Vue.component('base-input', {
   placeholder="Enter your username"
 ></base-input>
 ```
-
-***
-
-> 原文：http://vuejs.org/v2/guide/components-props.html
-
-***

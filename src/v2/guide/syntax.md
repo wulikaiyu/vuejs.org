@@ -102,7 +102,7 @@ new Vue({
 
 ## 指令(Directives)
 
-指令(directive)是带有 `v-` 前缀的特殊属性。指令属性的值期望接收的是**单个 JavaScript 表达式**（`v-for` 是例外情况，稍后我们再讨论）。指令的职责是，当表达式的值改变时，将其产生的影响效果，响应式地作用于 DOM。回顾我们在介绍中看到的例子：
+Directives are special attributes with the `v-` prefix. Directive attribute values are expected to be **a single JavaScript expression** (with the exception for `v-for`, which will be discussed later). A directive's job is to reactively apply side effects to the DOM when the value of its expression changes. Let's review the example we saw in the introduction:
 
 ``` html
 <p v-if="seen">Now you see me</p>

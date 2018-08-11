@@ -215,10 +215,10 @@ var watchExampleVM = new Vue({
     // 只要 question 发生改变，此函数就会执行
     question: function (newQuestion, oldQuestion) {
       this.answer = '等待输入停止……'
-      this.getAnswer()
+      this.debouncedGetAnswer()
     }
   },
-  methods: {
+  created: function () {
     // _.debounce 是由 lodash 提供的函数，
     // 在运行特别消耗性能的操作时，
     // 可以使用 _.debounce 来限制频率。
@@ -226,26 +226,24 @@ var watchExampleVM = new Vue({
     // 等到用户输入完毕之后，ajax 请求才会发出。
     // 想要了解更多关于 _.debounce 函数（以及与它类似的 _.throttle）的详细信息，
     // 请访问：https://lodash.com/docs#debounce
-    getAnswer: _.debounce(
-      function () {
-        if (this.question.indexOf('？') === -1) {
-          this.answer = '问题通常需要包含一个中文问号。;-)'
-          return
-        }
-        this.answer = '思考中……'
-        var vm = this
-        axios.get('https://yesno.wtf/api')
-          .then(function (response) {
-            vm.answer = _.capitalize(response.data.answer)
-          })
-          .catch(function (error) {
-            vm.answer = '错误！API 无法处理。' + error
-          })
-      },
-      // 这是用户停止输入操作后所等待的毫秒数。
-      // （译者注：500毫秒之内，用户继续输入，则重新计时）
-      500
-    )
+    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+  },
+  methods: {
+    getAnswer: function () {
+      if (this.question.indexOf('?') === -1) {
+        this.answer = '问题通常需要包含一个中文问号。;-)'
+        return
+      }
+      this.answer = '思考中……'
+      var vm = this
+      axios.get('https://yesno.wtf/api')
+        .then(function (response) {
+          vm.answer = _.capitalize(response.data.answer)
+        })
+        .catch(function (error) {
+          vm.answer = '错误！API 无法处理。' + error
+        })
+    }
   }
 })
 </script>
@@ -273,28 +271,28 @@ var watchExampleVM = new Vue({
   watch: {
     question: function (newQuestion, oldQuestion) {
       this.answer = '等待输入停止……'
-      this.getAnswer()
+      this.debouncedGetAnswer()
     }
   },
+  created: function () {
+    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+  },
   methods: {
-    getAnswer: _.debounce(
-      function () {
-        var vm = this
-        if (this.question.indexOf('？') === -1) {
-          vm.answer = '问题通常需要包含一个中文问号。;-)'
-          return
-        }
-        vm.answer = '思考中……'
-        axios.get('https://yesno.wtf/api')
-          .then(function (response) {
-            vm.answer = _.capitalize(response.data.answer)
-          })
-          .catch(function (error) {
-            vm.answer = 'Error! Could not reach the API. ' + error
-          })
-      },
-      500
-    )
+    getAnswer: function () {
+      if (this.question.indexOf('?') === -1) {
+        this.answer = '问题通常需要包含一个中文问号。;-)'
+        return
+      }
+      this.answer = '思考中……'
+      var vm = this
+      axios.get('https://yesno.wtf/api')
+        .then(function (response) {
+          vm.answer = _.capitalize(response.data.answer)
+        })
+        .catch(function (error) {
+          vm.answer = '错误！API 无法处理。' + error
+        })
+    }
   }
 })
 </script>
@@ -303,10 +301,4 @@ var watchExampleVM = new Vue({
 在这个场景中，使用 `watch` 选项，可以使我们执行一个限制执行频率的（访问一个 API 的）异步操作，并且不断地设置中间状态，直到我们获取到最终的 answer 数据之后，才真正执行异步操作。而 computed 属性无法实现。
 
 除了 `watch` 选项之外，还可以使用命令式(imperative)的 [vm.$watch](../api/#vm-watch) API。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/computed.html
-
-***
 
