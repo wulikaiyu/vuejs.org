@@ -106,5 +106,8 @@
 * 【重新翻译】官方重写的 src/v2/guide/components.md
 * 【记录】https://github.com/docschina/vuejs.org/pull/393
 
+### 2018.08.11
+* 【更新】合并 vuejs.org 的 master 分支
+
 ## 重新校对情况
 
