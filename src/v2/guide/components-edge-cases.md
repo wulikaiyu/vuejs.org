@@ -1,23 +1,23 @@
 ---
-title: Handling Edge Cases
+title: 处理边界情况
 type: guide
 order: 106
 ---
 
-> This page assumes you've already read the [Components Basics](components.html). Read that first if you are new to components.
+> 本页面会假定你已经阅读过 [组件基础](components.html)。如果你还不熟悉组件，请先阅读组件基础后再阅读本页面。
 
-<p class="tip">All the features on this page document the handling of edge cases, meaning unusual situations that sometimes require bending Vue's rules a little. Note however, that they all have disadvantages or situations where they could be dangerous. These are noted in each case, so keep them in mind when deciding to use each feature.</p>
+<p class="tip">本页面记录了一些边界情况的处理方案，也就是说，在遇到一些特殊情况时，需要对 Vue 的规则做出小的调整。不过还请注意，这些方案都有其缺点，或者会造成危害。我们会在每个示例中注明出来，因此在决定使用每个方案时请记住这点。</p>
 
-## Element & Component Access
+## 访问元素 & 访问组件
 
-In most cases, it's best to avoid reaching into other component instances or manually manipulating DOM elements. There are cases, however, when it can be appropriate.
+在多数场景中，避免直接触及其他组件实例，或手动操作 DOM 元素，是比较推荐的做法。下面是一些需要触及的示例，最好在合适的场景才选择这种方案。
 
-### Accessing the Root Instance
+### 访问根实例
 
-In every subcomponent of a `new Vue` instance, this root instance can be accessed with the `$root` property. For example, in this root instance:
+在由 `new Vue` 创建出的实例下的每个子组件中，可以通过 `$root` 属性访问根实例。举例来说，在根实例中：
 
 ```js
-// The root Vue instance
+// Vue 根实例
 new Vue({
   data: {
     foo: 1
@@ -31,23 +31,23 @@ new Vue({
 })
 ```
 
-All subcomponents will now be able to access this instance and use it as a global store:
+所有子组件中，都可以访问到此根实例，把它看作是一个全局存放的变量：
 
 ```js
-// Get root data
+// 获取根实例的数据
 this.$root.foo
 
-// Set root data
+// 设置根实例的数据
 this.$root.foo = 2
 
-// Access root computed properties
+// 访问根实例的 computed 属性
 this.$root.bar
 
-// Call root methods
+// 调用根实例的方法
 this.$root.baz()
 ```
 
-<p class="tip">This can be convenient for demos or very small apps with a handful of components. However, the pattern does not scale well to medium or large-scale applications, so we strongly recommend using <a href="https://github.com/vuejs/vuex">Vuex</a> to manage state in most cases.</p>
+<p class="tip">对于 demo 示例或着只有少量组件的小型应用程序来说非常方便。但是，这种模式无法很好地扩展应用到中型或大型应用程序，因此我们强烈建议，在大多数情况下使用 <a href="https://github.com/vuejs/vuex">Vuex</a> 来管理状态。</p>
 
 ### Accessing the Parent Component Instance
 
@@ -380,8 +380,3 @@ Vue.component('terms-of-service', {
 
 <p class="tip">Once again, try not to overuse this pattern. While convenient in those rare cases when you have to render a lot of static content, it's simply not necessary unless you actually notice slow rendering -- plus, it could cause a lot of confusion later. For example, imagine another developer who's not familiar with <code>v-once</code> or simply misses it in the template. They might spend hours trying to figure out why the template isn't updating correctly.</p>
 
-***
-
-> 原文：http://vuejs.org/v2/guide/components-edge-cases.html
-
-***
