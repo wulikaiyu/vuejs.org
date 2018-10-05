@@ -49,13 +49,13 @@ this.$root.baz()
 
 <p class="tip">对于 demo 示例或着只有少量组件的小型应用程序来说非常方便。但是，这种模式无法很好地扩展应用到中型或大型应用程序，因此我们强烈建议，在大多数情况下使用 <a href="https://github.com/vuejs/vuex">Vuex</a> 来管理状态。</p>
 
-### Accessing the Parent Component Instance
+### 访问父组件实例
 
-Similar to `$root`, the `$parent` property can be used to access the parent instance from a child. This can be tempting to reach for as a lazy alternative to passing data with a prop.
+和 `$root` 类似，`$parent` 属性可以用于在子组件中访问父组件实例。这种方式可能会让你沉溺于直接触及父组件实例数据的偷懒方式，而不再使用通过 prop 传递数据。
 
-<p class="tip">In most cases, reaching into the parent makes your application more difficult to debug and understand, especially if you mutate data in the parent. When looking at that component later, it will be very difficult to figure out where that mutation came from.</p>
+<p class="tip">在大多数情况下，触及父组件会使你的应用程序更难以调试和理解，特别是如果你在父组件中改变数据。稍后查看该组件时，会难以确定这些状态变化的来源。</p>
 
-There are cases however, particularly shared component libraries, when this _might_ be appropriate. For example, in abstract components that interact with JavaScript APIs instead of rendering HTML, like these hypothetical Google Maps components:
+然而，还是有一些场景（具体来说，例如需要共享的组件库），_可能_会比较适合直接访问父组件实例。例如，在一些抽象组件中，会直接与 JavaScript API 交互，而不是直接渲染 HTML，比如这些假想的 Google Maps 组件一样：
 
 ```html
 <google-map>
@@ -63,9 +63,9 @@ There are cases however, particularly shared component libraries, when this _mig
 </google-map>
 ```
 
-The `<google-map>` component might define a `map` property that all subcomponents need access to. In this case `<google-map-markers>` might want to access that map with something like `this.$parent.getMap`, in order to add a set of markers to it. You can see this pattern [in action here](https://jsfiddle.net/chrisvfritz/ttzutdxh/).
+`<google-map>` 组件可能定义了所有子组件都需要访问的 `map` 属性。在这种情况下，`<google-map-markers>` 可能需要使用类似 `this.$parent.getMap` 方式来获取 map 属性，以便为其添加一组标记点(marker)。[这里](https://jsfiddle.net/chrisvfritz/ttzutdxh/) 你可以查看这种方式的实际情况。
 
-Keep in mind, however, that components built with this pattern are still inherently fragile. For example, imagine we add a new `<google-map-region>` component and when `<google-map-markers>` appears within that, it should only render markers that fall within that region:
+但是请注意，以这种方式创建出来的组件，具有固有的脆弱性。例如，假想我们在这两个组件之间，添加了一个新的 `<google-map-region>` 组件，而 `<google-map-markers>` 放置于最内，这样就只会去渲染那个区域内的标记点：
 
 ```html
 <google-map>
@@ -75,35 +75,35 @@ Keep in mind, however, that components built with this pattern are still inheren
 </google-map>
 ```
 
-Then inside `<google-map-markers>` you might find yourself reaching for a hack like this:
+然后，在 `<google-map-markers>` 内部，你可能需要做一次 hack，这样去触及到 map 属性：
 
 ```js
 var map = this.$parent.map || this.$parent.$parent.map
 ```
 
-This has quickly gotten out of hand. That's why to provide context information to descendent components arbitrarily deep, we instead recommend [dependency injection](#Dependency-Injection).
+很快代码就会一片混乱。这就是为什么要为任意深度的后代组件提供上下文信息，所以我们推荐 [依赖注入](#Dependency-Injection) 方式。
 
-### Accessing Child Component Instances & Child Elements
+### 访问子组件实例或子元素
 
-Despite the existence of props and events, sometimes you might still need to directly access a child component in JavaScript. To achieve this you can assign a reference ID to the child component using the `ref` attribute. For example:
+尽管存在 props 和事件，但有时你可能仍然需要在 JavaScript 中直接访问一个子组件。想要实现这个目的，可以使用 `ref` 属性，来为子组件分配一个引用 ID。例如：
 
 ```html
 <base-input ref="usernameInput"></base-input>
 ```
 
-Now in the component where you've defined this `ref`, you can use:
+现在，在这个定义过 `ref` 的组件中，你可以调用：
 
 ```js
 this.$refs.usernameInput
 ```
 
-to access the `<base-input>` instance. This may be useful when you want to, for example, programmatically focus this input from a parent. In that case, the `<base-input>` component may similarly use a `ref` to provide access to specific elements inside it, such as:
+来访问 `<base-input>` 实例。这种访问方式可能会很有帮助，例如，在父组件中，通过可编程方式获取子组件文本框的焦点。在这种场景中，同样的方式，在 `<base-input>` 组件内部也使用 `ref` 属性，来提供对于特定元素的引用，例如：
 
 ```html
 <input ref="input">
 ```
 
-And even define methods for use by the parent:
+然后，在子组件中定义方法，以供父组件中调用：
 
 ```js
 methods: {
@@ -114,15 +114,15 @@ methods: {
 }
 ```
 
-Thus allowing the parent component to focus the input inside `<base-input>` with:
+这样，就可以在父组件中，获取到 `<base-input>` 组件内部文本框的焦点：
 
 ```js
 this.$refs.usernameInput.focus()
 ```
 
-When `ref` is used together with `v-for`, the ref you get will be an array containing the child components mirroring the data source.
+当 `ref` 和 `v-for` 一起使用的时候，ref 获取到的是一个包含对应数据源的子组件构成的数组。
 
-<p class="tip"><code>$refs</code> are only populated after the component has been rendered, and they are not reactive. It is only meant as an escape hatch for direct child manipulation - you should avoid accessing <code>$refs</code> from within templates or computed properties.</p>
+<p class="tip"><code>$refs</code> 只会在组件渲染完成之后填充，并且它们不是响应式的。这意味着，它只是一个子组件封装的应急出口 - 你应该避免在模板或计算属性中访问 <code>$refs</code>。</p>
 
 ### Dependency Injection
 
