@@ -165,9 +165,3 @@ Vue.directive('demo', function (el, binding) {
   console.log(binding.value.text)  // => "hello!"
 })
 ```
-
-***
-
-> 原文：https://vuejs.org/v2/guide/custom-directive.html
-
-***

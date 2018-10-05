@@ -383,9 +383,3 @@ vm.selected.number // => 123
 > 如果你还不熟悉 Vue 组件，现在先跳过此处。
 
 HTML 内置的几种 input 类型有时并不总能满足需求。幸运的是，使用 Vue 可以创建出可复用的输入框组件，并且能够完全自定义组件的行为。这些输入框组件甚至可以使用 `v-model`！想要了解更多信息，请阅读组件指南中 [自定义输入框](components.html#在组件中使用-v-model)。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/forms.html
-
-***

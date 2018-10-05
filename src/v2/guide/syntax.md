@@ -163,9 +163,3 @@ Directives are special attributes with the `v-` prefix. Directive attribute valu
 ```
 
 它们看起来可能与通常我们见到的 HTML 属性略有不同，但是，其实 `:` 和 `@` 都是符合属性名称(attribute name)相关标准的有效字符，并且所有支持 Vue.js 的浏览器都能够正确解析它们。此外，它们并不会出现在最终渲染的 HTML 标记中。简写语法是完全可选的书写方式，然而，随着你深入地了解它们的用法之后，你会领会到这种简单直接的简写方式，是非常赏心悦目的用法。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/syntax.html
-
-***

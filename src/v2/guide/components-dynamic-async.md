@@ -271,9 +271,3 @@ const AsyncComponent = () => ({
 ```
 
 > 注意，如果你想要在路由组件中使用以上语法，必须使用 [Vue Router](https://github.com/vuejs/vue-router) 2.4.0+ 版本。
-
-***
-
-> 原文：http://vuejs.org/v2/guide/components-dynamic-async.html
-
-***

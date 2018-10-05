@@ -121,9 +121,3 @@ export default {
 ## Acknowledgements
 
 This recipe was based on a contribution from [Kenneth Auchenberg](https://twitter.com/auchenberg), [available here](https://github.com/Microsoft/VSCode-recipes/tree/master/vuejs-cli).
-
-***
-
-> 原文：https://vuejs.org/v2/cookbook/debugging-in-vscode.html
-
-***

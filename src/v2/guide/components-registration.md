@@ -224,9 +224,3 @@ requireComponent.keys().forEach(fileName => {
 ```
 
 切记，**全局注册方式必须在（通过 `new Vue` 创建的）Vue 根实例创建之前置入组件**。这里是按照以上所述的，一个真实项目环境[示例](https://github.com/chrisvfritz/vue-enterprise-boilerplate/blob/master/src/components/_globals.js).
-
-***
-
-> 原文：http://vuejs.org/v2/guide/components-registration.html
-
-***

@@ -204,9 +204,3 @@ data: {
 ```
 
 最终，这只会从数组中找出「最后一个浏览器所支持的值」进行渲染。在这个示例中，对于支持「无需前缀版本的 flexbox」的浏览器，最终将渲染为 `display: flex`。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/class-and-style.html
-
-***

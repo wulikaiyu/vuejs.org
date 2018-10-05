@@ -255,9 +255,3 @@ $ bower install vue
 ## AMD 模块加载器
 
 所有构建为 UMD 版本的 Vue.js 都可以直接当作 AMD 模块使用。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/installation.html
-
-***

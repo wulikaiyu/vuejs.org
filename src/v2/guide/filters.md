@@ -83,9 +83,3 @@ new Vue({
 ```
 
 这里，`filterA` 被定义为接收三个参数的过滤器函数。其中 `message` 的值作为第一个参数，普通字符串 `'arg1'` 作为第二个参数，表达式 `arg2` 取值后的值作为第三个参数。
-
-***
-
-> 原文：https://vuejs.org/v2/guide/filters.html
-
-***

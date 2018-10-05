@@ -1,23 +1,23 @@
 ---
-title: Handling Edge Cases
+title: 处理边界情况
 type: guide
 order: 106
 ---
 
-> This page assumes you've already read the [Components Basics](components.html). Read that first if you are new to components.
+> 本页面会假定你已经阅读过 [组件基础](components.html)。如果你还不熟悉组件，请先阅读组件基础后再阅读本页面。
 
-<p class="tip">All the features on this page document the handling of edge cases, meaning unusual situations that sometimes require bending Vue's rules a little. Note however, that they all have disadvantages or situations where they could be dangerous. These are noted in each case, so keep them in mind when deciding to use each feature.</p>
+<p class="tip">本页面记录了一些边界情况的处理方案，也就是说，在遇到一些特殊情况时，需要对 Vue 的规则做出小的调整。不过还请注意，这些方案都有其缺点，或者会造成危害。我们会在每个示例中注明出来，因此在决定使用每个方案时请记住这点。</p>
 
-## Element & Component Access
+## 访问元素 & 访问组件
 
-In most cases, it's best to avoid reaching into other component instances or manually manipulating DOM elements. There are cases, however, when it can be appropriate.
+在多数场景中，避免直接触及其他组件实例，或手动操作 DOM 元素，是比较推荐的做法。下面是一些需要触及的示例，最好在合适的场景才选择这种方案。
 
-### Accessing the Root Instance
+### 访问根实例
 
-In every subcomponent of a `new Vue` instance, this root instance can be accessed with the `$root` property. For example, in this root instance:
+在由 `new Vue` 创建出的实例下的每个子组件中，可以通过 `$root` 属性访问根实例。举例来说，在根实例中：
 
 ```js
-// The root Vue instance
+// Vue 根实例
 new Vue({
   data: {
     foo: 1
@@ -31,31 +31,31 @@ new Vue({
 })
 ```
 
-All subcomponents will now be able to access this instance and use it as a global store:
+所有子组件中，都可以访问到此根实例，把它看作是一个全局存放的变量：
 
 ```js
-// Get root data
+// 获取根实例的数据
 this.$root.foo
 
-// Set root data
+// 设置根实例的数据
 this.$root.foo = 2
 
-// Access root computed properties
+// 访问根实例的 computed 属性
 this.$root.bar
 
-// Call root methods
+// 调用根实例的方法
 this.$root.baz()
 ```
 
-<p class="tip">This can be convenient for demos or very small apps with a handful of components. However, the pattern does not scale well to medium or large-scale applications, so we strongly recommend using <a href="https://github.com/vuejs/vuex">Vuex</a> to manage state in most cases.</p>
+<p class="tip">对于 demo 示例或着只有少量组件的小型应用程序来说非常方便。但是，这种模式无法很好地扩展应用到中型或大型应用程序，因此我们强烈建议，在大多数情况下使用 <a href="https://github.com/vuejs/vuex">Vuex</a> 来管理状态。</p>
 
-### Accessing the Parent Component Instance
+### 访问父组件实例
 
-Similar to `$root`, the `$parent` property can be used to access the parent instance from a child. This can be tempting to reach for as a lazy alternative to passing data with a prop.
+和 `$root` 类似，`$parent` 属性可以用于在子组件中访问父组件实例。这种方式可能会让你沉溺于直接触及父组件实例数据的偷懒方式，而不再使用通过 prop 传递数据。
 
-<p class="tip">In most cases, reaching into the parent makes your application more difficult to debug and understand, especially if you mutate data in the parent. When looking at that component later, it will be very difficult to figure out where that mutation came from.</p>
+<p class="tip">在大多数情况下，触及父组件会使你的应用程序更难以调试和理解，特别是如果你在父组件中改变数据。稍后查看该组件时，会难以确定这些状态变化的来源。</p>
 
-There are cases however, particularly shared component libraries, when this _might_ be appropriate. For example, in abstract components that interact with JavaScript APIs instead of rendering HTML, like these hypothetical Google Maps components:
+然而，还是有一些场景（具体来说，例如需要共享的组件库），_可能_会比较适合直接访问父组件实例。例如，在一些抽象组件中，会直接与 JavaScript API 交互，而不是直接渲染 HTML，比如这些假想的 Google Maps 组件一样：
 
 ```html
 <google-map>
@@ -63,9 +63,9 @@ There are cases however, particularly shared component libraries, when this _mig
 </google-map>
 ```
 
-The `<google-map>` component might define a `map` property that all subcomponents need access to. In this case `<google-map-markers>` might want to access that map with something like `this.$parent.getMap`, in order to add a set of markers to it. You can see this pattern [in action here](https://jsfiddle.net/chrisvfritz/ttzutdxh/).
+`<google-map>` 组件可能定义了所有子组件都需要访问的 `map` 属性。在这种情况下，`<google-map-markers>` 可能需要使用类似 `this.$parent.getMap` 方式来获取 map 属性，以便为其添加一组标记点(marker)。[这里](https://jsfiddle.net/chrisvfritz/ttzutdxh/) 你可以查看这种方式的实际情况。
 
-Keep in mind, however, that components built with this pattern are still inherently fragile. For example, imagine we add a new `<google-map-region>` component and when `<google-map-markers>` appears within that, it should only render markers that fall within that region:
+但是请注意，以这种方式创建出来的组件，具有固有的脆弱性。例如，假想我们在这两个组件之间，添加了一个新的 `<google-map-region>` 组件，而 `<google-map-markers>` 放置于最内，这样就只会去渲染那个区域内的标记点：
 
 ```html
 <google-map>
@@ -75,35 +75,35 @@ Keep in mind, however, that components built with this pattern are still inheren
 </google-map>
 ```
 
-Then inside `<google-map-markers>` you might find yourself reaching for a hack like this:
+然后，在 `<google-map-markers>` 内部，你可能需要做一次 hack，这样去触及到 map 属性：
 
 ```js
 var map = this.$parent.map || this.$parent.$parent.map
 ```
 
-This has quickly gotten out of hand. That's why to provide context information to descendent components arbitrarily deep, we instead recommend [dependency injection](#Dependency-Injection).
+很快代码就会一片混乱。这就是为什么要为任意深度的后代组件提供上下文信息，所以我们推荐 [依赖注入](#Dependency-Injection) 方式。
 
-### Accessing Child Component Instances & Child Elements
+### 访问子组件实例或子元素
 
-Despite the existence of props and events, sometimes you might still need to directly access a child component in JavaScript. To achieve this you can assign a reference ID to the child component using the `ref` attribute. For example:
+尽管存在 props 和事件，但有时你可能仍然需要在 JavaScript 中直接访问一个子组件。想要实现这个目的，可以使用 `ref` 属性，来为子组件分配一个引用 ID。例如：
 
 ```html
 <base-input ref="usernameInput"></base-input>
 ```
 
-Now in the component where you've defined this `ref`, you can use:
+现在，在这个定义过 `ref` 的组件中，你可以调用：
 
 ```js
 this.$refs.usernameInput
 ```
 
-to access the `<base-input>` instance. This may be useful when you want to, for example, programmatically focus this input from a parent. In that case, the `<base-input>` component may similarly use a `ref` to provide access to specific elements inside it, such as:
+来访问 `<base-input>` 实例。这种访问方式可能会很有帮助，例如，在父组件中，通过可编程方式获取子组件文本框的焦点。在这种场景中，同样的方式，在 `<base-input>` 组件内部也使用 `ref` 属性，来提供对于特定元素的引用，例如：
 
 ```html
 <input ref="input">
 ```
 
-And even define methods for use by the parent:
+然后，在子组件中定义方法，以供父组件中调用：
 
 ```js
 methods: {
@@ -114,19 +114,19 @@ methods: {
 }
 ```
 
-Thus allowing the parent component to focus the input inside `<base-input>` with:
+这样，就可以在父组件中，获取到 `<base-input>` 组件内部文本框的焦点：
 
 ```js
 this.$refs.usernameInput.focus()
 ```
 
-When `ref` is used together with `v-for`, the ref you get will be an array containing the child components mirroring the data source.
+当 `ref` 和 `v-for` 一起使用的时候，ref 获取到的是一个包含对应数据源的子组件构成的数组。
 
-<p class="tip"><code>$refs</code> are only populated after the component has been rendered, and they are not reactive. It is only meant as an escape hatch for direct child manipulation - you should avoid accessing <code>$refs</code> from within templates or computed properties.</p>
+<p class="tip"><code>$refs</code> 只会在组件渲染完成之后填充，并且它们不是响应式的。这意味着，它只是一个子组件封装的应急出口 - 你应该避免在模板或计算属性中访问 <code>$refs</code>。</p>
 
-### Dependency Injection
+### 依赖注入
 
-Earlier, when we described [Accessing the Parent Component Instance](#Accessing-the-Parent-Component-Instance), we showed an example like this:
+前面，我们在介绍 [访问父组件实例](#访问父组件实例) 时，展示过一个这样的示例：
 
 ```html
 <google-map>
@@ -136,9 +136,9 @@ Earlier, when we described [Accessing the Parent Component Instance](#Accessing-
 </google-map>
 ```
 
-In this component, all descendants of `<google-map>` needed access to a `getMap` method, in order to know which map to interact with. Unfortunately, using the `$parent` property didn't scale well to more deeply nested components. That's where dependency injection can be useful, using two new instance options: `provide` and `inject`.
+在这个组件中，所有后代 `<google-map>` 需要访问一个 `getMap` 方法，以便获取到要交互的 map 对象。不幸的是，在深层嵌套的组件中，使用 `$parent` 无法很好进行扩展。这时候我们就需要用到依赖注入(dependency injection)，其中会使用两个实例选项：`provide` and `inject`。
 
-The `provide` options allows us to specify the data/methods we want to **provide** to descendent components. In this case, that's the `getMap` method inside `<google-map>`:
+`provide` 选项允许我们指定，我们想要提供给后代组件的数据(data)/方法(methods)。在这个示例中，我们需要提供给后代组件的是 `<google-map>` 组件内部的 `getMap` 方法。
 
 ```js
 provide: function () {
@@ -148,22 +148,22 @@ provide: function () {
 }
 ```
 
-Then in any descendants, we can use the `inject` option to receive specific properties we'd like to add to that instance:
+然后，在所有后代组件中，我们可以使用 `inject` 选项，来接收那些我们需要添加到当前实例中的特定属性：
 
 ```js
 inject: ['getMap']
 ```
 
-You can see the [full example here](https://jsfiddle.net/chrisvfritz/tdv8dt3s/). The advantage over using `$parent` is that we can access `getMap` in _any_ descendant component, without exposing the entire instance of `<google-map>`. This allows us to more safely keep developing that component, without fear that we might change/remove something that a child component is relying on. The interface between these components remains clearly defined, just as with `props`.
+你可以在 [这里查看完整示例](https://jsfiddle.net/chrisvfritz/tdv8dt3s/)。相比直接引用 `$parent` 的优势在于，我们可以在_任何_一个后代组件中，直接访问 `getMap` 方法，无须暴露整个 `<google-map>` 实例。这可以使我们更加安全地继续开发该组件，而不必担心可能会修改或移除子组件所依赖的祖先组件中的内容。这些组件之间的接口保持着清晰的定义，就像是 `props` 一样。
 
-In fact, you can think of dependency injection as sort of "long-range props", except:
+事实上，你可以把依赖注入看作一组 "扩大范围的 props"，以下情况使用依赖注入：
 
-* ancestor components don't need to know which descendants use the properties it provides
-* descendant components don't need to know where injected properties are coming from
+* 祖先组件不需要知道哪些后代组件使用它提供的属性
+* 后代组件不需要知道被注入的属性来自何处
 
-<p class="tip">However, there are downsides to dependency injection. It couples components in your application to the way they're currently organized, making refactoring more difficult. Provided properties are also not reactive. This is by design, because using them to create a central data store scales just as poorly as <a href="#Accessing-the-Root-Instance">using <code>$root</code></a> for the same purpose. If the properties you want to share are specific to your app, rather than generic, or if you ever want to update provided data inside ancestors, then that's a good sign that you probably need a real state management solution like <a href="https://github.com/vuejs/vuex">Vuex</a> instead.</p>
+<p class="tip">然而，依赖注入还是有缺陷的。它将子组件与你应用程序当前组织方式耦合起来，使得重构变得更加困难。提供的属性也不是响应式的。这是出于设计考虑，因为使用它们来创建一个中心化数据仓库，和 <a href="#访问根实例">使用 <code>$root</code></a> 本质相同，都会难以维护。如果想要共享的属性，不是普通属性，而是应用程序级别的特定属性，或者希望想要祖先组件内部修改提供的数据，而后代组件响应式的更新，那么，你就需要使用一个真正的状态管理解决方案，就像 <a href="https://github.com/vuejs/vuex">Vuex</a> 这样的状态管理库。</p>
 
-Learn more about dependency injection in [the API doc](https://vuejs.org/v2/api/#provide-inject).
+在 [API 参考文档](https://vuejs.org/v2/api/#provide-inject) 中，了解更多关于依赖注入的知识。
 
 ## Programmatic Event Listeners
 
@@ -380,8 +380,3 @@ Vue.component('terms-of-service', {
 
 <p class="tip">Once again, try not to overuse this pattern. While convenient in those rare cases when you have to render a lot of static content, it's simply not necessary unless you actually notice slow rendering -- plus, it could cause a lot of confusion later. For example, imagine another developer who's not familiar with <code>v-once</code> or simply misses it in the template. They might spend hours trying to figure out why the template isn't updating correctly.</p>
 
-***
-
-> 原文：http://vuejs.org/v2/guide/components-edge-cases.html
-
-***
