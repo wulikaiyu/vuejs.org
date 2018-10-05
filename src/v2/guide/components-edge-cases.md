@@ -124,9 +124,9 @@ this.$refs.usernameInput.focus()
 
 <p class="tip"><code>$refs</code> 只会在组件渲染完成之后填充，并且它们不是响应式的。这意味着，它只是一个子组件封装的应急出口 - 你应该避免在模板或计算属性中访问 <code>$refs</code>。</p>
 
-### Dependency Injection
+### 依赖注入
 
-Earlier, when we described [Accessing the Parent Component Instance](#Accessing-the-Parent-Component-Instance), we showed an example like this:
+前面，我们在介绍 [访问父组件实例](#访问父组件实例) 时，展示过一个这样的示例：
 
 ```html
 <google-map>
@@ -136,9 +136,9 @@ Earlier, when we described [Accessing the Parent Component Instance](#Accessing-
 </google-map>
 ```
 
-In this component, all descendants of `<google-map>` needed access to a `getMap` method, in order to know which map to interact with. Unfortunately, using the `$parent` property didn't scale well to more deeply nested components. That's where dependency injection can be useful, using two new instance options: `provide` and `inject`.
+在这个组件中，所有后代 `<google-map>` 需要访问一个 `getMap` 方法，以便获取到要交互的 map 对象。不幸的是，在深层嵌套的组件中，使用 `$parent` 无法很好进行扩展。这时候我们就需要用到依赖注入(dependency injection)，其中会使用两个实例选项：`provide` and `inject`。
 
-The `provide` options allows us to specify the data/methods we want to **provide** to descendent components. In this case, that's the `getMap` method inside `<google-map>`:
+`provide` 选项允许我们指定，我们想要提供给后代组件的数据(data)/方法(methods)。在这个示例中，我们需要提供给后代组件的是 `<google-map>` 组件内部的 `getMap` 方法。
 
 ```js
 provide: function () {
@@ -148,22 +148,22 @@ provide: function () {
 }
 ```
 
-Then in any descendants, we can use the `inject` option to receive specific properties we'd like to add to that instance:
+然后，在所有后代组件中，我们可以使用 `inject` 选项，来接收那些我们需要添加到当前实例中的特定属性：
 
 ```js
 inject: ['getMap']
 ```
 
-You can see the [full example here](https://jsfiddle.net/chrisvfritz/tdv8dt3s/). The advantage over using `$parent` is that we can access `getMap` in _any_ descendant component, without exposing the entire instance of `<google-map>`. This allows us to more safely keep developing that component, without fear that we might change/remove something that a child component is relying on. The interface between these components remains clearly defined, just as with `props`.
+你可以在 [这里查看完整示例](https://jsfiddle.net/chrisvfritz/tdv8dt3s/)。相比直接引用 `$parent` 的优势在于，我们可以在_任何_一个后代组件中，直接访问 `getMap` 方法，无须暴露整个 `<google-map>` 实例。这可以使我们更加安全地继续开发该组件，而不必担心可能会修改或移除子组件所依赖的祖先组件中的内容。这些组件之间的接口保持着清晰的定义，就像是 `props` 一样。
 
-In fact, you can think of dependency injection as sort of "long-range props", except:
+事实上，你可以把依赖注入看作一组 "扩大范围的 props"，以下情况使用依赖注入：
 
-* ancestor components don't need to know which descendants use the properties it provides
-* descendant components don't need to know where injected properties are coming from
+* 祖先组件不需要知道哪些后代组件使用它提供的属性
+* 后代组件不需要知道被注入的属性来自何处
 
-<p class="tip">However, there are downsides to dependency injection. It couples components in your application to the way they're currently organized, making refactoring more difficult. Provided properties are also not reactive. This is by design, because using them to create a central data store scales just as poorly as <a href="#Accessing-the-Root-Instance">using <code>$root</code></a> for the same purpose. If the properties you want to share are specific to your app, rather than generic, or if you ever want to update provided data inside ancestors, then that's a good sign that you probably need a real state management solution like <a href="https://github.com/vuejs/vuex">Vuex</a> instead.</p>
+<p class="tip">然而，依赖注入还是有缺陷的。它将子组件与你应用程序当前组织方式耦合起来，使得重构变得更加困难。提供的属性也不是响应式的。这是出于设计考虑，因为使用它们来创建一个中心化数据仓库，和 <a href="#访问根实例">使用 <code>$root</code></a> 本质相同，都会难以维护。如果想要共享的属性，不是普通属性，而是应用程序级别的特定属性，或者希望想要祖先组件内部修改提供的数据，而后代组件响应式的更新，那么，你就需要使用一个真正的状态管理解决方案，就像 <a href="https://github.com/vuejs/vuex">Vuex</a> 这样的状态管理库。</p>
 
-Learn more about dependency injection in [the API doc](https://vuejs.org/v2/api/#provide-inject).
+在 [API 参考文档](https://vuejs.org/v2/api/#provide-inject) 中，了解更多关于依赖注入的知识。
 
 ## Programmatic Event Listeners
 
