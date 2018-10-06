@@ -235,7 +235,7 @@ methods: {
 
 请在 [fiddle](https://jsfiddle.net/chrisvfritz/1Leb7up8/) 中查看完整示例代码。注意，即使我们提供了这种策略，如果你发现自己必须在单个组件中完成大量安装和清理工作，最佳解决方案通常还是创建出更加模块化的组件。在这种情况下，我们建议你将这些代码抽离，创建出一个可复用的 `<input-datepicker>` 组件。
 
-想要了解更多可编程事件监听器的内容，请查看 [实例方法 / 事件](https://vuejs.org/v2/api/#Instance-Methods-Events) 相关的 API。
+想要了解更多可编程事件监听器的内容，请查看 [实例方法 / 事件](https://vue.docschina.org/v2/api/#实例方法-事件) 相关的 API。
 
 <p class="tip">注意，Vue 事件系统与浏览器中的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">EventTarget API</a> 不同。尽管它们之间运行机制类似，但是 <code>$emit</code>, <code>$on</code> 和 <code>$off</code> <strong>并不是</strong> <code>dispatchEvent</code>, <code>addEventListener</code> 和 <code>removeEventListener</code>。</p>
 
