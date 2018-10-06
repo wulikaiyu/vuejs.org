@@ -165,39 +165,39 @@ inject: ['getMap']
 
 在 [API 参考文档](https://vuejs.org/v2/api/#provide-inject) 中，了解更多关于依赖注入的知识。
 
-## Programmatic Event Listeners
+## 可编程的事件监听器
 
-So far, you've seen uses of `$emit`, listened to with `v-on`, but Vue instances also offer other methods in its events interface. We can:
+到目前为止，你已经学会使用 `$emit`，并且知道使用 `v-on` 监听它触发的事件，但是 Vue 实例还在其事件接口中提供了其他方法。我们可以：
 
-- Listen for an event with `$on(eventName, eventHandler)`
-- Listen for an event only once with `$once(eventName, eventHandler)`
-- Stop listening for an event with `$off(eventName, eventHandler)`
+- 使用 `$on(eventName, eventHandler)` 监听一个事件
+- 使用 `$once(eventName, eventHandler)` 一次性地监听一个事件
+- 使用 `$off(eventName, eventHandler)` 停止监听一个事件
 
-You normally won't have to use these, but they're available for cases when you need to manually listen for events on a component instance. They can also be useful as a code organization tool. For example, you may often see this pattern for integrating a 3rd-party library:
+通常不需要用到这些可编程的事件监听器，但是它们可用于这种情况，就是当你需要手动监听组件实例上的事件时。还可以用作代码组织工具。例如，你可能经常会看到这种集成第三方库的用法：
 
 ```js
-// Attach the datepicker to an input once
-// it's mounted to the DOM.
+// 在挂载到 DOM 时，将日期选择器插件
+// 应用到一个文本框上
 mounted: function () {
-  // Pikaday is a 3rd-party datepicker library
+  // Pikaday 是一个第三方日期选择器插件库
   this.picker = new Pikaday({
     field: this.$refs.input,
     format: 'YYYY-MM-DD'
   })
 },
-// Right before the component is destroyed,
-// also destroy the datepicker.
+// 在组件被销毁之前，
+// 也销毁日期选择器。
 beforeDestroy: function () {
   this.picker.destroy()
 }
 ```
 
-This has two potential issues:
+这里会有两个潜在的问题：
 
-- It requires saving the `picker` to the component instance, when it's possible that only lifecycle hooks need access to it. This isn't terrible, but it could be considered clutter.
-- Our setup code is kept separate from our cleanup code, making it more difficult to programmatically clean up anything we set up.
+- 需要在组件实例中保存此 `picker` 实例，然而，只有生命周期钩子才可能需要访问它。这并不算严重的问题，只是多余出一个 picker 实例属性。
+- 我们的安装代码与清理代码彼此分离，这会使以编程方式清理我们设置的任何内容时，变得更加困难。
 
-You could resolve both issues with a programmatic listener:
+你应该通过一个可编程的事件监听器，来解决这两个问题：
 
 ```js
 mounted: function () {
@@ -212,7 +212,7 @@ mounted: function () {
 }
 ```
 
-Using this strategy, we could even use Pikaday with several input elements, with each new instance automatically cleaning up after itself:
+使用这种策略，我们甚至可以将 Pikaday 应用到多个输入框元素，每个新的实例都会在钩子触发后自动清理自身：
 
 ```js
 mounted: function () {
@@ -233,11 +233,11 @@ methods: {
 }
 ```
 
-See [this fiddle](https://jsfiddle.net/chrisvfritz/1Leb7up8/) for the full code. Note, however, that if you find yourself having to do a lot of setup and cleanup within a single component, the best solution will usually be to create more modular components. In this case, we'd recommend creating a reusable `<input-datepicker>` component.
+请在 [fiddle](https://jsfiddle.net/chrisvfritz/1Leb7up8/) 中查看完整示例代码。注意，即使我们提供了这种策略，如果你发现自己必须在单个组件中完成大量安装和清理工作，最佳解决方案通常还是创建出更加模块化的组件。在这种情况下，我们建议你将这些代码抽离，创建出一个可复用的 `<input-datepicker>` 组件。
 
-To learn more about programmatic listeners, check out the API for [Events Instance Methods](https://vuejs.org/v2/api/#Instance-Methods-Events).
+想要了解更多可编程事件监听器的内容，请查看 [实例方法 / 事件](https://vuejs.org/v2/api/#Instance-Methods-Events) 相关的 API。
 
-<p class="tip">Note that Vue's event system is different from the browser's <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">EventTarget API</a>. Though they work similarly, <code>$emit</code>, <code>$on</code>, and <code>$off</code> are <strong>not</strong> aliases for <code>dispatchEvent</code>, <code>addEventListener</code>, and <code>removeEventListener</code>.</p>
+<p class="tip">注意，Vue 事件系统与浏览器中的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">EventTarget API</a> 不同。尽管它们之间运行机制类似，但是 <code>$emit</code>, <code>$on</code> 和 <code>$off</code> <strong>并不是</strong> <code>dispatchEvent</code>, <code>addEventListener</code> 和 <code>removeEventListener</code>。</p>
 
 ## Circular References
 
