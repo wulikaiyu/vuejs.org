@@ -163,7 +163,7 @@ inject: ['getMap']
 
 <p class="tip">然而，依赖注入还是有缺陷的。它将子组件与你应用程序当前组织方式耦合起来，使得重构变得更加困难。提供的属性也不是响应式的。这是出于设计考虑，因为使用它们来创建一个中心化数据仓库，和 <a href="#访问根实例">使用 <code>$root</code></a> 本质相同，都会难以维护。如果想要共享的属性，不是普通属性，而是应用程序级别的特定属性，或者希望想要祖先组件内部修改提供的数据，而后代组件响应式的更新，那么，你就需要使用一个真正的状态管理解决方案，就像 <a href="https://github.com/vuejs/vuex">Vuex</a> 这样的状态管理库。</p>
 
-在 [API 参考文档](https://vuejs.org/v2/api/#provide-inject) 中，了解更多关于依赖注入的知识。
+在 [API 参考文档](https://vue.docschina.org/v2/api/#provide-inject) 中，了解更多关于依赖注入的知识。
 
 ## 可编程的事件监听器
 
@@ -351,34 +351,31 @@ Vue.component('hello-world', {
 
 这种方式适用于具有较多模板内容的演示示例，或者用于小型应用程序，但是在其他情况下应该避免使用，因为这会把模板从组件定义的其他选项中脱离出来。
 
-## Controlling Updates
+## 控制更新
 
-Thanks to Vue's Reactivity system, it always knows when to update (if you use it correctly). There are edge cases, however, when you might want to force an update, despite the fact that no reactive data has changed. Then there are other cases when you might want to prevent unnecessary updates.
+感谢 Vue 的响应式系统，（如果你能够正确使用，）它会始终知道进行更新的正确时机。不过，还是有些边界情况，即使事实上响应式数据并没有发生变化，你都需要强制更新。并且还有一些其他情况，你可能想要阻止不必要的更新。
 
-### Forcing an Update
+### 强制一次更新
 
-<p class="tip">If you find yourself needing to force an update in Vue, in 99.99% of cases, you've made a mistake somewhere.</p>
+<p class="tip">如果你发现自己需要在 Vue 中做一次强制更新，99.9% 的情况，是你在某个地方做错了事。</p>
 
-You may not have accounted for change detection caveats [with arrays](https://vuejs.org/v2/guide/list.html#Caveats) or [objects](https://vuejs.org/v2/guide/list.html#Object-Change-Detection-Caveats), or you may be relying on state that isn't tracked by Vue's reactivity system, e.g. with `data`.
+你可能还没有留意到 [数组](https://vue.docschina.org/v2/guide/list.html#注意事项-Caveats) 或 [对象](https://vue.docschina.org/v2/guide/list.html#对象变化检测注意事项-Object-Change-Detection-Caveats) 的变化检测注意事项，或者，你可能依赖了一个未被 Vue 响应式系统追踪的状态（例如 `data` 中的非响应式状态）。
 
-However, if you've ruled out the above and find yourself in this extremely rare situation of having to manually force an update, you can do so with [`$forceUpdate`](../api/#vm-forceUpdate).
+如果你已遵循上述注意事项，但是发现在极少数的情况下，仍然需要手动强制更新，这时候你可以通过 [`$forceUpdate`](../api/#vm-forceUpdate) 来实现。
 
-### Cheap Static Components with `v-once`
 ### 使用 `v-once` 创建低开销的静态组件
 
-Rendering plain HTML elements is very fast in Vue, but sometimes you might have a component that contains **a lot** of static content. In these cases, you can ensure that it's only evaluated once and then cached by adding the `v-once` directive to the root element, like this:
-尽管在 Vue 中渲染 HTML 很快，不过当组件中包含**大量**静态内容时，可以考虑使用 `v-once` 将渲染结果缓存起来，就像这样：
+尽管通过 Vue 来渲染普通的 HTML 元素非常快速，不过有时你或许会有一个包含**大量**静态内容的组件。在这种情况下，你可以在根元素上添加 `v-once` 指令，来确保这些静态内容只做一次取值后就缓存起来，就像这样：
 
 ``` js
 Vue.component('terms-of-service', {
   template: `
     <div v-once>
-      <h1>Terms of Service</h1>
-      ... a lot of static content ...
+      <h1>服务条款</h1>
+      …… 大量静态内容 ……
     </div>
   `
 })
 ```
 
-<p class="tip">Once again, try not to overuse this pattern. While convenient in those rare cases when you have to render a lot of static content, it's simply not necessary unless you actually notice slow rendering -- plus, it could cause a lot of confusion later. For example, imagine another developer who's not familiar with <code>v-once</code> or simply misses it in the template. They might spend hours trying to figure out why the template isn't updating correctly.</p>
-
+<p class="tip">再次声明，尽量不要过度使用这种方式。虽然在必须渲染大量静态内容这种极少数的情况下时，使用这种方式会很方便，但是除非你能够确切感受到渲染速度变慢，否则这种方式完全是没有必要的 - 再加上它在后期会带来很多困惑。例如，设想有其他不熟悉 <code>v-once</code> 的开发者，或熟悉但是忽略了模板中 <code>v-once</code> 指令。他们可能会消耗数个小时，去找出模板无法正确更新的原因。</p>
