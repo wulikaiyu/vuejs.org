@@ -303,7 +303,7 @@ vm.$set(vm.items, indexOfItem, newValue)
 vm.items.splice(newLength)
 ```
 
-## 对象变化检测说明(Object Change Detection Caveats)
+## 对象变化检测注意事项(Object Change Detection Caveats)
 
 再次申明，受现代 Javascript 的限制，** Vue 无法检测到对象属性的添加或删除**。例如：
 
