@@ -1542,7 +1542,7 @@ type: api
 
 - **另见：**[Vue.delete](#Vue-delete)
 
-## 实例方法/事件
+## 实例方法 / 事件
 
 ### vm.$on( event, callback )
 
