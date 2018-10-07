@@ -239,17 +239,17 @@ methods: {
 
 <p class="tip">注意，Vue 事件系统与浏览器中的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">EventTarget API</a> 不同。尽管它们之间运行机制类似，但是 <code>$emit</code>, <code>$on</code> 和 <code>$off</code> <strong>并不是</strong> <code>dispatchEvent</code>, <code>addEventListener</code> 和 <code>removeEventListener</code>。</p>
 
-## Circular References
+## 循环引用
 
-### Recursive Components
+### 递归组件
 
-Components can recursively invoke themselves in their own template. However, they can only do so with the `name` option:
+组件可以在它本身的模板中，递归地调用自身。但是，只有具有 `name` 选项时，才能这么做：
 
 ``` js
 name: 'unique-name-of-my-component'
 ```
 
-When you register a component globally using `Vue.component`, the global ID is automatically set as the component's `name` option.
+在使用 `Vue.component` 全局注册一个组件时, 组件的全局 ID 会被自动设置为其 `name` 选项。
 
 ``` js
 Vue.component('unique-name-of-my-component', {
@@ -257,18 +257,18 @@ Vue.component('unique-name-of-my-component', {
 })
 ```
 
-If you're not careful, recursive components can also lead to infinite loops:
+如果你不够小心谨慎, 递归组件可能会导致无限循环:
 
 ``` js
 name: 'stack-overflow',
 template: '<div><stack-overflow></stack-overflow></div>'
 ```
 
-A component like the above will result in a "max stack size exceeded" error, so make sure recursive invocation is conditional (i.e. uses a `v-if` that will eventually be `false`).
+类似如上所示的组件，会导致一个 "max stack size exceeded(超出最大调用栈大小)" 错误，因此，确保递归调用具有终止条件（例如，使用最终会得到 `false` 的 `v-if`）。
 
-### Circular References Between Components
+### 组件之间的循环引用
 
-Let's say you're building a file directory tree, like in Finder or File Explorer. You might have a `tree-folder` component with this template:
+假设你正在创建一个文件目录树，就像是 Mac 下的 Finder 或是 Windows 下的文件资源管理器。你可能有一个使用如下模板的 `tree-folder` 组件：
 
 ``` html
 <p>
@@ -277,7 +277,7 @@ Let's say you're building a file directory tree, like in Finder or File Explorer
 </p>
 ```
 
-Then a `tree-folder-contents` component with this template:
+然后，有一个使用如下模板的 `tree-folder-contents` 组件：
 
 ``` html
 <ul>
@@ -288,17 +288,17 @@ Then a `tree-folder-contents` component with this template:
 </ul>
 ```
 
-When you look closely, you'll see that these components will actually be each other's descendent _and_ ancestor in the render tree - a paradox! When registering components globally with `Vue.component`, this paradox is resolved for you automatically. If that's you, you can stop reading here.
+仔细观察后，你就会发现：在渲染树中，这些组件实际上都是彼此的_后代_和_祖先_，这是矛盾且相悖的！在使用 `Vue.component` 全局注册组件时，这个问题会自动解决。如果以上已经解决你的问题，你可以在这里停止阅读。
 
-However, if you're requiring/importing components using a __module system__, e.g. via Webpack or Browserify, you'll get an error:
+然而，如果你使用了__模块系统__（例如通过 webpack 或 Browserify 等打包工具），并通过 require/import 导入组件的话，你就会看到一个错误：
 
 ```
 Failed to mount component: template or render function not defined.
 ```
 
-To explain what's happening, let's call our components A and B. The module system sees that it needs A, but first A needs B, but B needs A, but A needs B, etc. It's stuck in a loop, not knowing how to fully resolve either component without first resolving the other. To fix this, we need to give the module system a point at which it can say, "A needs B _eventually_, but there's no need to resolve B first."
+为了解释这是如何产生的，我们可以将组件称为 A 和 B。模块系统看到它需要导入 A，但是首先 A 需要导入 B，但是 B 又需要导入 A，A 又需要导入 B，等等，如此形成了一个死循环，模块系统并不知道如何在先不解析一个组件的情况下，完全解析另外一个组件。为了修复这个问题，我们需要给模块系统一个切入点，我们可以告诉它，A 需要导入 B，但是没有必要先解析 B。
 
-In our case, let's make that point the `tree-folder` component. We know the child that creates the paradox is the `tree-folder-contents` component, so we'll wait until the `beforeCreate` lifecycle hook to register it:
+在这种场景中，将 `tree-folder` 组件做为切入点。我们知道制造矛盾的是 `tree-folder-contents` 子组件，所以，我们需要在 `tree-folder` 组件的 `beforeCreate` 这一生命周期钩子函数中，去注册 `tree-folder-contents` 组件：
 
 ``` js
 beforeCreate: function () {
@@ -306,7 +306,7 @@ beforeCreate: function () {
 }
 ```
 
-Or alternatively, you could use Webpack's asynchronous `import` when you register the component locally:
+或者，还可以在局部注册组件时，使用 webpack 提供的异步 `import`，
 
 ``` js
 components: {
@@ -314,7 +314,7 @@ components: {
 }
 ```
 
-Problem solved!
+这样问题就解决了！
 
 ## Alternate Template Definitions
 
