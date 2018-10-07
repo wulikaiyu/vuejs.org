@@ -316,26 +316,26 @@ components: {
 
 这样问题就解决了！
 
-## Alternate Template Definitions
+## 模板定义的其他替代方式
 
-### Inline Templates
+### 内联模板
 
-When the `inline-template` special attribute is present on a child component, the component will use its inner content as its template, rather than treating it as distributed content. This allows more flexible template-authoring.
+当子组件具有 `inline-template` 特性时，这个组件会把它内部的内容当作它的模板，而不是把这些内部内容当作分发内容。这会使模板编写更加灵活。
 
 ``` html
 <my-component inline-template>
   <div>
-    <p>These are compiled as the component's own template.</p>
-    <p>Not parent's transclusion content.</p>
+    <p>这些内容会被编译为组件自身的模板。</p>
+    <p>而不是父组件输送的分发内容。</p>
   </div>
 </my-component>
 ```
 
-<p class="tip">However, <code>inline-template</code> makes the scope of your templates harder to reason about. As a best practice, prefer defining templates inside the component using the <code>template</code> option or in a <code>&lt;template&gt;</code> element in a <code>.vue</code> file.</p>
+<p class="tip">但是，<code>inline-template</code> 会使模板的作用域变得难以推测。所以最佳实践还是在组件内部使用 <code>template</code> 选项来定义模板，或者在 <code>.vue</code> 文件中，定义一个 <code>&lt;template&gt;</code> 元素。</p>
 
 ### X-Templates
 
-Another way to define templates is inside of a script element with the type `text/x-template`, then referencing the template by an id. For example:
+另一种定义模板的方式是，使用一个 type 为 `text/x-template` 的 script 元素，然后通过一个 id 来引用这个模板。例如：
 
 ``` html
 <script type="text/x-template" id="hello-world-template">
@@ -349,7 +349,7 @@ Vue.component('hello-world', {
 })
 ```
 
-<p class="tip">These can be useful for demos with large templates or in extremely small applications, but should otherwise be avoided, because they separate templates from the rest of the component definition.</p>
+这种方式适用于具有较多模板内容的演示示例，或者用于小型应用程序，但是在其他情况下应该避免使用，因为这会把模板从组件定义的其他选项中脱离出来。
 
 ## Controlling Updates
 
@@ -364,8 +364,10 @@ You may not have accounted for change detection caveats [with arrays](https://vu
 However, if you've ruled out the above and find yourself in this extremely rare situation of having to manually force an update, you can do so with [`$forceUpdate`](../api/#vm-forceUpdate).
 
 ### Cheap Static Components with `v-once`
+### 使用 `v-once` 创建低开销的静态组件
 
 Rendering plain HTML elements is very fast in Vue, but sometimes you might have a component that contains **a lot** of static content. In these cases, you can ensure that it's only evaluated once and then cached by adding the `v-once` directive to the root element, like this:
+尽管在 Vue 中渲染 HTML 很快，不过当组件中包含**大量**静态内容时，可以考虑使用 `v-once` 将渲染结果缓存起来，就像这样：
 
 ``` js
 Vue.component('terms-of-service', {
