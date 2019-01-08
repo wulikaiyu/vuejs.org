@@ -280,7 +280,7 @@ var watchExampleVM = new Vue({
   methods: {
     getAnswer: function () {
       if (this.question.indexOf('?') === -1) {
-        this.answer = '问题通常需要包含一个中文问号。;-)'
+        this.answer = '问题通常需要包含一个英文问号。;-)'
         return
       }
       this.answer = '思考中……'
